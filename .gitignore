@@ -1,0 +1,23 @@
+# Node.js dependencies
+node_modules/
+
+# Logs
+logs/
+*.log
+
+# Nginx
+nginx/
+
+# Apollo Server
+dist/
+build/
+
+# Elastic Stack
+.es/
+.eslintcache
+
+# Environment variables
+.env
+
+# Other
+.DS_Store
