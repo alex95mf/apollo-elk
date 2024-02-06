@@ -8,7 +8,7 @@ Vagrant.configure("2") do |config|
     vb.memory = "2048"
   end
 
-  # Provisionamiento mediante shell script
+  # Aprovisionamiento mediante shell script
   config.vm.provision "shell", inline: <<-SHELL
     # Instalación de dependencias y herramientas necesarias
     sudo apt-get install -y ca-certificates curl gnupg # Instala certificados, curl y gnupg

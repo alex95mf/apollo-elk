@@ -3,21 +3,21 @@ import { startStandaloneServer } from '@apollo/server/standalone';
 
 const PUERTO = 4000;
 
-// A schema is a collection of type definitions (hence "typeDefs")
-// that together define the "shape" of queries that are executed against
-// your data.
+// Un esquema es una colección de definiciones de tipos (por eso "typeDefs")
+// que juntas definen la "forma" de las consultas que se ejecutan contra
+// los datos.
 const typeDefs = `#graphql
-  # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
+  # Los comentarios en cadenas de GraphQL (como este) comienzan con el símbolo hash (#).
 
-  # This "Book" type defines the queryable fields for every book in our data source.
+  # Este tipo "Book" define los campos consultables para cada libro en nuestra fuente de datos.
   type Book {
     title: String
     author: String
   }
 
-  # The "Query" type is special: it lists all of the available queries that
-  # clients can execute, along with the return type for each. In this
-  # case, the "books" query returns an array of zero or more Books (defined above).
+  # El tipo "Query" es especial: lista todas las consultas disponibles que
+  # los clientes pueden ejecutar, junto con el tipo de retorno para cada una. En este
+  # caso, la consulta "books" devuelve una matriz de cero o más Books (definidos arriba).
   type Query {
     books: [Book]
   }
@@ -25,35 +25,35 @@ const typeDefs = `#graphql
 
 const books = [
     {
-      title: 'The Awakening',
-      author: 'Kate Chopin',
+        title: 'The Awakening',
+        author: 'Kate Chopin',
     }, {
-      title: 'City of Glass',
-      author: 'Paul Auster',
+        title: 'City of Glass',
+        author: 'Paul Auster',
     },
 ];
 
-// Resolvers define how to fetch the types defined in your schema.
-// This resolver retrieves books from the "books" array above.
+// Los resolvers definen cómo recuperar los tipos definidos en el esquema.
+// Este resolver recupera libros de la matriz "books" de arriba.
 const resolvers = {
     Query: {
-      books: () => books,
+        books: () => books,
     },
 };
 
-// The ApolloServer constructor requires two parameters: your schema
-// definition and your set of resolvers.
+// El constructor ApolloServer requiere dos parámetros: la definición de esquema
+// y el conjunto de resolvers.
 const server = new ApolloServer({
     typeDefs,
     resolvers,
 });
 
-// Passing an ApolloServer instance to the `startStandaloneServer` function:
-//  1. creates an Express app
-//  2. installs your ApolloServer instance as middleware
-//  3. prepares your app to handle incoming requests
+// Pasar una instancia de ApolloServer a la función `startStandaloneServer`:
+//  1. crea una aplicación Express
+//  2. instala la instancia de ApolloServer como middleware
+//  3. prepara la aplicación para manejar solicitudes entrantes
 const { url } = await startStandaloneServer(server, {
     listen: { port: PUERTO },
 });
 
-console.log(`🚀  Server ready at: ${url}`);
+console.log(`🚀  Servidor listo en: ${url}`);
