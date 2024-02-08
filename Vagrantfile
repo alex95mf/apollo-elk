@@ -1,42 +1,36 @@
-Vagrant.configure("2") do |config|
-  # Configuración de la máquina virtual
-  config.vm.box = "bento/ubuntu-22.04"
-  config.vm.network "private_network", ip: "192.168.56.18"
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
 
-  # Configuración del proveedor de la máquina virtual (VirtualBox)
-  config.vm.provider "virtualbox" do |vb|
-    vb.memory = "2048"
+Vagrant.configure("2") do |config|
+  config.vm.define "elastic" do |elastic|
+    elastic.vm.box = "bento/ubuntu-22.04"
+    elastic.vm.hostname = "elastic"
+    elastic.vm.network "private_network", ip: "192.168.56.17"
+
+    elastic.vm.provider "virtualbox" do |vb|
+      vb.memory = "4096"
+    end
+
+    elastic.vm.provision "file", source: "./elk/docker-compose.yml", destination: "/home/vagrant/docker-compose.yml"
+    elastic.vm.provision "file", source: "./elk/env.txt", destination: "/home/vagrant/.env"
+
+    elastic.vm.provision "docker"
+    elastic.vm.provision "shell", inline: <<-ELK
+      sudo sysctl -w vm.max_map_count=262144
+      sudo cat vm.max_map_count=262144 >> /etc/sysctl.conf
+      docker compose up -d
+    ELK
   end
 
-  # Aprovisionamiento mediante shell script
-  config.vm.provision "shell", inline: <<-SHELL
-    # Instalación de dependencias y herramientas necesarias
-    sudo apt-get install -y ca-certificates curl gnupg # Instala certificados, curl y gnupg
-    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/nodesource.gpg # Descarga y añade la clave GPG de NodeSource al sistema
-    echo "deb https://deb.nodesource.com/node_20.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list # Agrega el repositorio de NodeSource para Node.js 20.x al archivo de fuentes de paquetes
-    sudo apt-get update # Actualiza la lista de paquetes disponibles
+  config.vm.define "apollo" do |apollo|
+    apollo.vm.box = "bento/ubuntu-22.04"
+    apollo.vm.hostname = "apollo-server"
+    apollo.vm.network "private_network", ip: "192.168.56.18"
 
-    # Instalación de Node.js, Nginx, npm, pm2 y otras dependencias globales
-    sudo apt-get install -y nodejs nginx # Instala Node.js y Nginx
-    sudo npm install -g npm@latest pm2@latest # Instala las últimas versiones de npm y pm2 globalmente
+    apollo.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+    end
 
-    # Copia del proyecto Apollo al directorio del usuario vagrant
-    cp -r /vagrant/apollo /home/vagrant # Copia el directorio 'apollo' desde la carpeta compartida a /home/vagrant
-    cd /home/vagrant/apollo # Cambia al directorio 'apollo'
-
-    # Instalación de dependencias del proyecto Apollo
-    npm install @apollo/server graphql # Instala las dependencias de Apollo Server y GraphQL
-
-    # Inicia el servidor Apollo usando pm2
-    pm2 start index.js # Inicia el servidor Apollo
-    pm2 startup systemd # Configura pm2 para iniciar con el sistema utilizando systemd
-    sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u vagrant --hp /home/vagrant # Configura pm2 para el usuario vagrant
-    pm2 save # Guarda el estado actual de los procesos gestionados por pm2
-
-    # Configuración de Nginx para servir la aplicación Apollo
-    sudo cp /vagrant/apollo/nginx.conf /etc/nginx/nginx.conf # Copia la configuración de Nginx desde el directorio compartido
-    sudo cp /vagrant/apollo/apollo.conf /etc/nginx/conf.d/apollo.conf # Copia la configuración específica de la aplicación Apollo
-    sudo systemctl enable nginx # Habilita Nginx para que se inicie automáticamente al arrancar el sistema
-    sudo systemctl restart nginx # Reinicia Nginx para aplicar los cambios de configuración
-  SHELL
+    apollo.vm.provision "shell", path: "scripts/apollo.sh"
+  end
 end
