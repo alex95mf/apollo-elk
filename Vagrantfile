@@ -17,7 +17,7 @@ Vagrant.configure("2") do |config|
     elastic.vm.provision "docker"
     elastic.vm.provision "shell", inline: <<-ELK
       sudo sysctl -w vm.max_map_count=262144
-      sudo cat vm.max_map_count=262144 >> /etc/sysctl.conf
+      sudo echo vm.max_map_count=262144 >> /etc/sysctl.conf
       docker compose up -d
     ELK
   end
@@ -32,5 +32,9 @@ Vagrant.configure("2") do |config|
     end
 
     apollo.vm.provision "shell", path: "scripts/apollo.sh"
+    apollo.vm.provision "shell", inline: "sudo mv /vagrant/apollo/elastic-ca.crt /etc/ssl/certs"
+    # apollo.vm.provision "shell", path: "scripts/metricbeat.sh"
+    # apollo.vm.provision "shell", path: "scripts/apm.sh"
+    # apollo.vm.provision "shell", path: "scripts/logstash.sh"
   end
 end
