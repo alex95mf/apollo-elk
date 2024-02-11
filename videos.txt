@@ -1,0 +1,6 @@
+1. Plan de monitorizacion Metricbeat:
+
+2. Plan de monitorizacion APM:
+
+3. Plan de monitorizacion Filebeat Nginx:
+https://alumnosunir-my.sharepoint.com/:v:/g/personal/ronnyalexander_martinez230_comunidadunir_net/ERCiMMLnruxJszzlla0-BiABRZDWRpExH0V6rhPy1X3OwA?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=0tt0TM
