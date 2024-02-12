@@ -9,6 +9,7 @@ sudo npm install -g npm@latest pm2@latest
 cp -r /vagrant/apollo /home/vagrant
 cd /home/vagrant/apollo
 npm install @apollo/server graphql
+npm install elastic-apm-node --save
 #npm start
 
 pm2 start index.js
