@@ -37,6 +37,5 @@ Vagrant.configure("2") do |config|
     apollo.vm.provision "shell", path: "scripts/filebeat.sh"
     # apollo.vm.provision "shell", path: "scripts/metricbeat.sh"
     # apollo.vm.provision "shell", path: "scripts/apm.sh"
-    # apollo.vm.provision "shell", path: "scripts/logstash.sh"
   end
 end
