@@ -29,10 +29,10 @@ setup.template.settings:
   index.number_of_shards: 1
 
 setup.kibana:
-  host: "http://192.168.56.17:5601"
+  host: "http://localhost:5601"
 
 output.elasticsearch:
-  hosts: ["192.168.56.17:9200"]
+  hosts: ["localhost:9200"]
   preset: balanced
   protocol: "https"
   username: "elastic"

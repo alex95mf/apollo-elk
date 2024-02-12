@@ -1,3 +1,11 @@
+// Add this to the very top of the first file loaded in your app
+var apm = require('elastic-apm-node').start({
+    serviceName: 'my-service-name',
+    secretToken: '',
+    serverUrl: 'http://localhost:8200',
+    environment: 'my-environment'
+});
+
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 
