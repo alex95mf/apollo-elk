@@ -19,7 +19,6 @@ Vagrant.configure("2") do |config|
       sudo sysctl -w vm.max_map_count=262144
       sudo echo vm.max_map_count=262144 >> /etc/sysctl.conf
       docker compose up -d
-      sudo cp /vagrant/apollo/elastic-ca.crt /etc/ssl/certs
     ELK
   end
 
